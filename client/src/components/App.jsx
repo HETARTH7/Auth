@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
-
+import Dashboard from "./Dashboard";
 const App = () => {
   const [user, setUser] = useState();
   return (
@@ -13,14 +13,13 @@ const App = () => {
   );
 };
 const Login = ({ setUser }) => {
+  const handleChange = (e) => setUser(e.target.value);
   return (
-    <Link to="/dashboard" onClick={() => setUser("bob")}>
-      Submit
-    </Link>
+    <div>
+      <input onChange={handleChange}></input>
+      <Link to="/dashboard">Submit</Link>
+    </div>
   );
 };
 
-const Dashboard = ({ user }) => {
-  return <div>Hello {user}!</div>;
-};
 export default App;
