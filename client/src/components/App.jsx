@@ -1,23 +1,22 @@
 import React, { useState } from "react";
-import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
 import Dashboard from "./Dashboard";
+import Preferences from "./Preferences";
+import Login from "./Login";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 const App = () => {
-  const [user, setUser] = useState();
+  const [token, setToken] = useState();
+  if (!token) {
+    return <Login setToken={setToken} />;
+  }
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login setUser={setUser} />} />
-        <Route path="/dashboard" element={<Dashboard user={user} />} />
-      </Routes>
-    </BrowserRouter>
-  );
-};
-const Login = ({ setUser }) => {
-  const handleChange = (e) => setUser(e.target.value);
-  return (
-    <div>
-      <input onChange={handleChange}></input>
-      <Link to="/dashboard">Submit</Link>
+    <div className="wrapper">
+      <h1>Application</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/preferences" element={<Preferences />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };
