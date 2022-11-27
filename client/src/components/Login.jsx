@@ -3,6 +3,9 @@ import React, { useState } from "react";
 const Login = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+  const [auth, setAuth] = useState(false);
+  const [mssg, setMssg] = useState("");
+  const errormssg = "Invalid Details. Please try again";
   const handleUser = (e) => {
     setUser(e.target.value);
   };
@@ -11,15 +14,10 @@ const Login = () => {
   };
   const login = (e) => {
     e.preventDefault();
-    if (user === "hetarth") {
-      if (password === "hello") {
-        sessionStorage.setItem("user", user);
-        window.location = "/dashboard";
-      } else{
-        console.log('Incorrect details');
-      }
-    } else{
-      console.log('Incorrect details');
+    try {
+      if (!auth) throw errormssg;
+    } catch (err) {
+      setMssg(err);
     }
   };
   return (
@@ -29,6 +27,7 @@ const Login = () => {
         <input type="password" onChange={handlePassword}></input>
         <input type="submit"></input>
       </form>
+      <p id="mssg">{mssg}</p>
     </div>
   );
 };
