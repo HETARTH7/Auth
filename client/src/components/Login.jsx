@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+var md5 = require('md5');
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,8 +25,8 @@ const Login = () => {
   };
   useEffect(() => {
     if (auth === "OK") {
-      sessionStorage.setItem("user", username);
-      window.location = "/dashboard";
+      sessionStorage.setItem("user", md5(username));
+      window.location = `/dashboard/${username}`;
     } else if (auth === "Wrong") {
       setMssg("Invalid. Please try again");
     }
