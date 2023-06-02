@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -12,9 +13,11 @@ const Register = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
-    console.log(username);
-    console.log(password);
+  const handleSubmit = () => {
+    axios
+      .post("http://localhost:5000/register", { username, password })
+      .then()
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -50,9 +53,9 @@ const Register = () => {
             </div>
             <div className="text-center py-4">
               <span>
-                Not a member{" "}
-                <Link className="text-red-500" to="/register">
-                  Register Now
+                Already a member{" "}
+                <Link className="text-red-500" to="/login">
+                  Login in
                 </Link>
               </span>
             </div>

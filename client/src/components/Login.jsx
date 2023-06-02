@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -13,8 +14,11 @@ const Login = () => {
   };
 
   const handleSubmit = (e) => {
-    console.log(username);
-    console.log(password);
+    e.preventDefault();
+    axios
+      .post("http://localhost:5000/login", { username, password })
+      .then((res) => (localStorage.token = res.data))
+      .catch((err) => console.log(err));
   };
 
   return (
