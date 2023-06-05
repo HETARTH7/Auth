@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../context/AuthProvider";
 
 const Login = () => {
+  const { setAuth } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [response, setResponse] = useState({});
   const userChange = (e) => {
     setUsername(e.target.value);
   };
@@ -17,8 +20,14 @@ const Login = () => {
     e.preventDefault();
     axios
       .post("http://localhost:5000/login", { username, password })
-      .then((res) => (localStorage.token = res.data))
+      .then((res) => setResponse(res))
       .catch((err) => console.log(err));
+
+    const accessToken = response.data.accessToken;
+    const roles = response.data.roles;
+    setAuth({ username, password, roles, accessToken });
+    setUsername("");
+    setPassword("");
   };
 
   return (
