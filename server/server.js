@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const Jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 app.use(cors());
@@ -16,32 +16,34 @@ const userSchema = {
 
 const User = new mongoose.model("User", userSchema);
 
-app.post("/register", (req, res) => {
+app.post("/register", async (req, res) => {
   const { username, password } = req.body;
-  const newUser = new User({ username, password });
-  newUser
-    .save()
-    .then()
-    .catch((err) => res.status(400).json(`ERROR ${err}`));
+  const hashedPwd = await bcrypt.hash(password, 10);
+  const userObject = { username, password: hashedPwd };
+  const user = await User.create(userObject);
+  if (user) {
+    res.status(201).json(`New user ${username} created`);
+  } else {
+    res.status(400).json("Invalid user data received");
+  }
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  User.findOne({ username: username })
-    .then((user) => {
-      if (user.password === password) {
-        const token = Jwt.sign(
-          {
-            userId: user._id,
-            username: user.username,
-          },
-          "secret",
-          { expiresIn: "24h" }
-        );
-        return res.send(token);
-      }
-    })
-    .catch((err) => res.status(400).json(err));
+  const foundUser = await User.findOne({ username }).exec();
+  const match = await bcrypt.compare(password, foundUser.password);
+  if (!match) return res.status(401).json("Unauthorized");
+
+  const accessToken = jwt.sign(
+    {
+      UserInfo: {
+        username: foundUser.username,
+      },
+    },
+    "secret",
+    { expiresIn: "15m" }
+  );
+  res.json({ accessToken });
 });
 
 app.listen(5000, () => console.log("Server running on port 5000"));

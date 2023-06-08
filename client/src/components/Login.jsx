@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../context/AuthProvider";
+import AuthContext from "../context/AuthProvider";
 
 const Login = () => {
   const { setAuth } = useContext(AuthContext);
@@ -20,12 +20,10 @@ const Login = () => {
     e.preventDefault();
     axios
       .post("http://localhost:5000/login", { username, password })
-      .then((res) => setResponse(res))
+      .then((res) => setResponse(res.data.accessToken))
       .catch((err) => console.log(err));
-
-    const accessToken = response.data.accessToken;
-    const roles = response.data.roles;
-    setAuth({ username, password, roles, accessToken });
+    const accessToken = response;
+    setAuth({ username, password, accessToken });
     setUsername("");
     setPassword("");
   };
