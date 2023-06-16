@@ -50,4 +50,20 @@ app.post("/login", async (req, res) => {
   res.json({ accessToken });
 });
 
+app.get("/auth", (req, res) => {
+  const token = req.body.token;
+  if (token) {
+    const decode = jwt.verify(token, "secret");
+    res.json({
+      login: true,
+      data: decode,
+    });
+  } else {
+    res.json({
+      login: false,
+      data: "error",
+    });
+  }
+});
+
 app.listen(5000, () => console.log("Server running on port 5000"));

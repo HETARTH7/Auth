@@ -26,7 +26,7 @@ const Login = () => {
     var accessToken;
     await axios
       .post("http://localhost:5000/login", { username, password })
-      .then((res) => (accessToken = res.data.accessToken))
+      .then((res) => console.log(accessToken = res.data.accessToken))
       .catch((err) => console.log(err));
     setAuth({ username, password, accessToken });
     setUsername("");
