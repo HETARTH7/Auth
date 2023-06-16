@@ -30,6 +30,10 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
+  if (!username || !password)
+    return res
+      .status(400)
+      .json({ message: "Username and password are required." });
   const foundUser = await User.findOne({ username }).exec();
   const match = await bcrypt.compare(password, foundUser.password);
   if (!match) return res.status(401).json("Unauthorized");

@@ -1,13 +1,18 @@
-import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import AuthContext from "../context/AuthProvider";
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [response, setResponse] = useState({});
+
   const userChange = (e) => {
     setUsername(e.target.value);
   };
@@ -16,16 +21,17 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
+    var accessToken;
+    await axios
       .post("http://localhost:5000/login", { username, password })
-      .then((res) => setResponse(res.data.accessToken))
+      .then((res) => (accessToken = res.data.accessToken))
       .catch((err) => console.log(err));
-    const accessToken = response;
     setAuth({ username, password, accessToken });
     setUsername("");
     setPassword("");
+    navigate(from, { replace: true });
   };
 
   return (
@@ -56,7 +62,7 @@ const Login = () => {
                 placeholder="Username"
               />
               <button className="bg-indigo-500 rounded-xl h-12" type="submit">
-                Lets go
+                <Link to="/profile">Login</Link>
               </button>
             </div>
             <div className="text-center py-4">
