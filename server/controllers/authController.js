@@ -20,6 +20,7 @@ const Authenticate = async (req, res) => {
       expiresIn: "1d",
     });
     user.refreshToken = refreshToken;
+    user.save();
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       sameSite: "None",
