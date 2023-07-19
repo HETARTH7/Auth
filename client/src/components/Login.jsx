@@ -21,9 +21,13 @@ const Login = () => {
     try {
       const response = await axios.post("/login", { username, password });
       console.log(response);
-      const accessToken = response?.data?.roles;
-      const roles = response?.data?.roles;
-      setAuth({ username, password, roles, accessToken });
+      const accessToken = response.data.accessToken;
+      const role = response.data.role;
+      setAuth({ username, password, role, accessToken });
+      localStorage["username"] = username;
+      role === "user"
+        ? (window.location.href = "dashboard")
+        : (window.location.href = "/admin");
     } catch (err) {
       setErrMssg("Login Failed");
     }
