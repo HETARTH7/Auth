@@ -1,12 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import axios from "../api/axios";
-import AuthContext from "../context/AuthProvider";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errMssg, setErrMssg] = useState("");
+  const navigate = useNavigate();
 
   const changeUsername = (e) => {
     setUsername(e.target.value);
@@ -20,14 +22,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post("/login", { username, password });
-      console.log(response);
       const accessToken = response.data.accessToken;
       const role = response.data.role;
       setAuth({ username, password, role, accessToken });
       localStorage["username"] = username;
-      role === "user"
-        ? (window.location.href = "dashboard")
-        : (window.location.href = "/admin");
+      role === "user" ? navigate("/dashboard") : navigate("/admin");
     } catch (err) {
       setErrMssg("Login Failed");
     }
