@@ -4,7 +4,7 @@ import axios from "../api/axios";
 
 const Admin = () => {
   const { auth } = useAuth();
-  const getAdmin = async () => {
+  const getData = async () => {
     try {
       const response = await axios.get("/admin", {
         headers: { authorization: "Bearer " + auth.accessToken },
@@ -16,7 +16,7 @@ const Admin = () => {
   };
   return (
     <div>
-      <button onClick={getAdmin}>Get Admin</button>
+      <button onClick={getData}>Get Admin Info</button>
     </div>
   );
 };
