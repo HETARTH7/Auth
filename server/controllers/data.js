@@ -1,7 +1,11 @@
 const express = require("express");
 
-const GetData = (req, res) => {
+const UserData = (req, res) => {
   return res.json("hello");
 };
 
-module.exports = { GetData };
+const AdminData = (req, res) => {
+  return res.json("hello");
+};
+
+module.exports = { UserData, AdminData };

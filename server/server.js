@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
+const cookieParser = require('cookie-parser');
 const connectDB = require("./config/dbConfig");
 
 const app = express();
@@ -15,7 +15,8 @@ app.use("/register", require("./routes/register"));
 app.use("/refresh", require("./routes/refresh"));
 app.use("/logout", require("./routes/logout"));
 
-app.use("/data", require("./routes/data"));
+app.use("/user", require("./routes/user"));
+app.use("/admin", require("./routes/user"));
 
 const port = 5000;
 
