@@ -1,9 +1,11 @@
 import React from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "../api/axios";
+import RequireAuth from "./RequireAuth";
 
 const Dashboard = () => {
   const { auth } = useAuth();
+  RequireAuth();
   const getData = async () => {
     try {
       const response = await axios.get("/user", {
