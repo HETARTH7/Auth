@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { useEffect } from "react";
+import useRefreshToken from "../hooks/useRefreshToken.js";
 
 const RequireAuth = () => {
   const { auth } = useAuth();
+  const refresh = useRefreshToken();
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!auth.username) navigate("/login");
-  });
+  if (!auth.username) {
+    if (localStorage["isLoggedIn"]) refresh();
+    else navigate("/login");
+  }
 };
 
 export default RequireAuth;

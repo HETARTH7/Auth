@@ -25,8 +25,9 @@ const Login = () => {
       const accessToken = response.data.accessToken;
       const role = response.data.role;
       setAuth({ username, password, role, accessToken });
-      localStorage["username"] = username;
       role === "user" ? navigate("/dashboard") : navigate("/admin");
+      localStorage["user"] = username;
+      localStorage["isLoggedIn"] = true;
     } catch (err) {
       setErrMssg("Login Failed");
     }
