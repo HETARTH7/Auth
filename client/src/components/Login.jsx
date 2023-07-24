@@ -24,7 +24,7 @@ const Login = () => {
       const response = await axios.post("/login", { username, password });
       const accessToken = response.data.accessToken;
       const role = response.data.role;
-      setAuth({ username, password, role, accessToken });
+      setAuth({ username, accessToken });
       role === "user" ? navigate("/dashboard") : navigate("/admin");
       localStorage["user"] = username;
       localStorage["isLoggedIn"] = true;
