@@ -14,7 +14,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const fetchWorkouts = async () => {
+    const fetchData = async () => {
       const response = await fetch("http://localhost:5000/data", {
         headers: { Authorization: `Bearer ${user.token}` },
       });
@@ -26,13 +26,13 @@ const Home = () => {
     };
 
     if (user) {
-      fetchWorkouts();
+      fetchData();
     }
   }, [user]);
 
   return (
     <div>
-      <span>{user.email}</span>
+      <span>{!user ? "" : user.email}</span>
       <button onClick={handleClick}>Log out</button>
     </div>
   );
