@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLogout } from "../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
@@ -12,10 +12,28 @@ const Home = () => {
     logout();
     navigate("/");
   };
+
+  useEffect(() => {
+    const fetchWorkouts = async () => {
+      const response = await fetch("http://localhost:5000/data", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      const json = await response.json();
+
+      if (response.ok) {
+        console.log(json);
+      }
+    };
+
+    if (user) {
+      fetchWorkouts();
+    }
+  }, [user]);
+
   return (
     <div>
-      <button onClick={handleClick}>Log out</button>
       <span>{user.email}</span>
+      <button onClick={handleClick}>Log out</button>
     </div>
   );
 };
