@@ -15,6 +15,7 @@ connectDB();
 const port = 5000;
 
 app.use("/user", require("./routes/user"));
+app.use("/data", require("./routes/data"));
 
 app.listen(port, () => {
   console.log(`listenting at port ${port}`);
